@@ -14,5 +14,6 @@ namespace InventorySales.Domain.Entities {
         public int SupplierId { get; set; }
         public Supplier Supplier { get; set; }
         public List<StockMovement> StockMovements { get; set; } = new List<StockMovement>();
+        public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }
