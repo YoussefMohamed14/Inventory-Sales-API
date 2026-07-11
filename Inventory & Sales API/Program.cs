@@ -1,3 +1,7 @@
+using InventorySales.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,11 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AppDbContext>(option
+    => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' was not found.")));
+
 
 var app = builder.Build();
 

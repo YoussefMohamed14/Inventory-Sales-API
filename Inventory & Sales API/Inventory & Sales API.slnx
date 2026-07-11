@@ -3,5 +3,5 @@
   <Project Path="../InventorySales.Domain/InventorySales.Domain.csproj" />
   <Project Path="../InventorySales.Infrastructure/InventorySales.Infrastructure.csproj" />
   <Project Path="../InventorySales.UnitTests/InventorySales.UnitTests.csproj" Id="b5a96781-bd73-4ab0-b97d-1c37930f6a79" />
-  <Project Path="Inventory &amp; Sales API.csproj" />
+  <Project Path="InventorySales.API.csproj" />
 </Solution>
