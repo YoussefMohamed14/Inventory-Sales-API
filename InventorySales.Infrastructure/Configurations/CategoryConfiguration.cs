@@ -6,22 +6,22 @@ namespace InventorySales.Infrastructure.Configurations {
         public void Configure(EntityTypeBuilder<Category> builder) {
             builder.ToTable("Categories");
 
-            builder.HasKey(c => c.Id);
+            builder.HasKey(category => category.Id);
 
-            builder.Property(c => c.Name)
+            builder.Property(category => category.Name)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(100);
 
-            builder.Property(c => c.Description)
+            builder.Property(category => category.Description)
                 .IsRequired(false)
-                .HasMaxLength(200);
+                .HasMaxLength(500);
 
-            builder.HasIndex(c => c.Name)
+            builder.HasIndex(category => category.Name)
                 .IsUnique();
 
-            builder.HasMany(c => c.Products)
-                .WithOne(p => p.Category)
-                .HasForeignKey(c => c.CategoryId)
+            builder.HasMany(category => category.Products)
+                .WithOne(product => product.Category)
+                .HasForeignKey(product => product.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

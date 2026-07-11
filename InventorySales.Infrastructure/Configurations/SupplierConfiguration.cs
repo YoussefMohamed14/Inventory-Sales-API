@@ -8,33 +8,32 @@ using System.Text;
 namespace InventorySales.Infrastructure.Configurations {
     public class SupplierConfiguration : IEntityTypeConfiguration<Supplier> {
         public void Configure(EntityTypeBuilder<Supplier> builder) {
-
             builder.ToTable("Suppliers");
-            
-            builder.HasKey(s => s.Id);
 
-            builder.Property(s => s.Name)
+            builder.HasKey(supplier => supplier.Id);
+
+            builder.Property(supplier => supplier.Name)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(s => s.Email)
+            builder.Property(supplier => supplier.Email)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(150);
 
-            builder.Property(s => s.Phone)
+            builder.HasIndex(supplier => supplier.Email)
+                .IsUnique();
+
+            builder.Property(supplier => supplier.Phone)
                 .IsRequired(false)
                 .HasMaxLength(20);
 
-            builder.Property(s => s.Address)
+            builder.Property(supplier => supplier.Address)
                 .IsRequired(false)
-                .HasMaxLength(200);
+                .HasMaxLength(250);
 
-            builder.HasIndex(s => s.Email)
-                .IsUnique();
-
-            builder.HasMany(s => s.Products)
-                .WithOne(p => p.Supplier)
-                .HasForeignKey(s => s.SupplierId)
+            builder.HasMany(supplier => supplier.Products)
+                .WithOne(product => product.Supplier)
+                .HasForeignKey(product => product.SupplierId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
