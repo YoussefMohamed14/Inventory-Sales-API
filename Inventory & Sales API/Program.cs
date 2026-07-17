@@ -1,4 +1,11 @@
+using InventorySales.Application.GenericRepository;
+using InventorySales.Application.Interfaces.Repositories;
+using InventorySales.Application.Profiles;
+using InventorySales.Application.UnitOfWork;
 using InventorySales.Infrastructure.Data;
+using InventorySales.Infrastructure.GenericRepository;
+using InventorySales.Infrastructure.Repositories;
+using InventorySales.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -15,6 +22,11 @@ builder.Services.AddDbContext<AppDbContext>(option
     => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") 
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' was not found.")));
 
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
