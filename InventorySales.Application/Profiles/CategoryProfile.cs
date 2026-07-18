@@ -9,7 +9,13 @@ namespace InventorySales.Application.Profiles {
     public class CategoryProfile : Profile {
         public CategoryProfile() {
             CreateMap<CreateCategoryDto, Category>();
+
             CreateMap<UpdateCategoryDto, Category>();
+
+            CreateMap<PatchCategoryDto, Category>()
+                .ForAllMembers(option => 
+                    option.Condition((src,dest,srcMember) => srcMember != null));
+
             CreateMap<Category, CategoryDto>();
         }
     }

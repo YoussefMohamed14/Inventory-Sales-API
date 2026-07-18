@@ -6,6 +6,7 @@ using InventorySales.Application.UnitOfWork;
 using InventorySales.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -28,17 +29,18 @@ namespace InventorySales.Infrastructure.Services {
 
         public async Task<CategoryDto?> GetByIdAsync(int id) {
             var category = await _categoryRepository.GetByIdAsync(id);
-            
+
             if (category == null) {
                 throw new Exception("Category not found.");
             }
-            
+
             return _mapper.Map<CategoryDto?>(category);
         }
 
         public async Task<bool> ExistsByNameAsync(string name) {
             return await _categoryRepository.ExistsByNameAsync(name);
         }
+
         public async Task<CategoryDto> CreateAsync(CreateCategoryDto dto) {
             if (await _categoryRepository.ExistsByNameAsync(dto.Name)) {
                 throw new Exception("Category name already exists.");
@@ -51,6 +53,29 @@ namespace InventorySales.Infrastructure.Services {
             await _unitOfWork.SaveChangesAsync();
 
             return _mapper.Map<CategoryDto>(category);
+        }
+        
+        public async Task UpdateAsync(int id, UpdateCategoryDto dto) {
+            var category = await _categoryRepository.GetByIdAsync(id);
+
+            if (category == null) { throw new Exception("Category not found!"); }
+
+            _mapper.Map(dto, category);
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+        public async Task DeleteAsync(int id) {
+            var category = await _categoryRepository.GetByIdAsync(id);
+
+            if(category == null) { throw new Exception(nameof(Category)); }
+
+            if (category.Products.Any()) {
+                throw new Exception("Cannot delete category because it contains products.");
+            }
+
+            _categoryRepository.Delete(category);
+
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
