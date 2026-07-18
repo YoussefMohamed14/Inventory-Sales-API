@@ -11,7 +11,7 @@ namespace InventorySales.Application.Interfaces.Services {
 
         Task<CategoryDto> CreateAsync(CreateCategoryDto dto);
 
-        Task UpdateAsync(int id, UpdateCategoryDto dto);
+        Task<CategoryDto> UpdateAsync(int id, UpdateCategoryDto dto);
 
         Task DeleteAsync(int id);
     }

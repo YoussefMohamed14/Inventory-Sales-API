@@ -1,10 +1,12 @@
 using InventorySales.Application.GenericRepository;
 using InventorySales.Application.Interfaces.Repositories;
+using InventorySales.Application.Interfaces.Services;
 using InventorySales.Application.Profiles;
 using InventorySales.Application.UnitOfWork;
 using InventorySales.Infrastructure.Data;
 using InventorySales.Infrastructure.GenericRepository;
 using InventorySales.Infrastructure.Repositories;
+using InventorySales.Infrastructure.Services;
 using InventorySales.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -24,13 +26,13 @@ builder.Services.AddDbContext<AppDbContext>(option
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();

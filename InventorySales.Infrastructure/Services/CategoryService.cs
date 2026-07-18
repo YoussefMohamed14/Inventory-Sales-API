@@ -55,7 +55,7 @@ namespace InventorySales.Infrastructure.Services {
             return _mapper.Map<CategoryDto>(category);
         }
         
-        public async Task UpdateAsync(int id, UpdateCategoryDto dto) {
+        public async Task<CategoryDto> UpdateAsync(int id, UpdateCategoryDto dto) {
             var category = await _categoryRepository.GetByIdAsync(id);
 
             if (category == null) { throw new Exception("Category not found!"); }
@@ -63,7 +63,10 @@ namespace InventorySales.Infrastructure.Services {
             _mapper.Map(dto, category);
 
             await _unitOfWork.SaveChangesAsync();
+
+            return _mapper.Map<CategoryDto>(category);
         }
+
         public async Task DeleteAsync(int id) {
             var category = await _categoryRepository.GetByIdAsync(id);
 
