@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using InventorySales.Application.DTOs.Category;
+using InventorySales.Application.Exceptions;
 using InventorySales.Application.Interfaces.Repositories;
 using InventorySales.Application.Interfaces.Services;
 using InventorySales.Application.UnitOfWork;
 using InventorySales.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace InventorySales.Infrastructure.Services {
     public class CategoryService : ICategoryService {
@@ -31,7 +27,7 @@ namespace InventorySales.Infrastructure.Services {
             var category = await _categoryRepository.GetByIdAsync(id);
 
             if (category == null) {
-                throw new Exception("Category not found.");
+                throw new NotFoundException(nameof(Category),id);
             }
 
             return _mapper.Map<CategoryDto?>(category);
@@ -58,7 +54,7 @@ namespace InventorySales.Infrastructure.Services {
         public async Task<CategoryDto> UpdateAsync(int id, UpdateCategoryDto dto) {
             var category = await _categoryRepository.GetByIdAsync(id);
 
-            if (category == null) { throw new Exception("Category not found!"); }
+            if (category == null) { throw new NotFoundException(nameof(Category), id); }
 
             _mapper.Map(dto, category);
 
@@ -70,7 +66,7 @@ namespace InventorySales.Infrastructure.Services {
         public async Task DeleteAsync(int id) {
             var category = await _categoryRepository.GetByIdAsync(id);
 
-            if(category == null) { throw new Exception(nameof(Category)); }
+            if(category == null) { throw new NotFoundException(nameof(Category),id); }
 
             if (category.Products.Any()) {
                 throw new Exception("Cannot delete category because it contains products.");
