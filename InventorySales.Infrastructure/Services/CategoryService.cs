@@ -39,7 +39,7 @@ namespace InventorySales.Infrastructure.Services {
 
         public async Task<CategoryDto> CreateAsync(CreateCategoryDto dto) {
             if (await _categoryRepository.ExistsByNameAsync(dto.Name)) {
-                throw new Exception("Category name already exists.");
+                throw new ConflictException(nameof(Category));
             }
 
             var category = _mapper.Map<Category>(dto);
@@ -69,7 +69,7 @@ namespace InventorySales.Infrastructure.Services {
             if(category == null) { throw new NotFoundException(nameof(Category),id); }
 
             if (category.Products.Any()) {
-                throw new Exception("Cannot delete category because it contains products.");
+                throw new BadRequestException("Cannot delete category because it contains products.");
             }
 
             _categoryRepository.Delete(category);

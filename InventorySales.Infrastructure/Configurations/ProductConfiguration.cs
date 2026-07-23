@@ -40,16 +40,18 @@ namespace InventorySales.Infrastructure.Configurations {
                 .IsRequired(false)
                 .HasMaxLength(500);
 
+            builder.Property(product => product.SKU)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder.Property(product => product.BarCode)
+                .IsRequired()
+                .HasMaxLength(50);
+
             builder.Property(product => product.Price)
                 .HasPrecision(18, 2);
 
-            builder.Property(product => product.CostPrice)
-                .HasPrecision(18, 2);
-
-            builder.Property(product => product.Quantity)
-                .IsRequired();
-
-            builder.Property(product => product.MinimumStock)
+            builder.Property(product => product.StockQuantity)
                 .IsRequired();
 
             builder.Property(product => product.IsActive)
