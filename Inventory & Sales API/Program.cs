@@ -1,7 +1,7 @@
+using Inventory___Sales_API.Middlewares;
 using InventorySales.Application.GenericRepository;
 using InventorySales.Application.Interfaces.Repositories;
 using InventorySales.Application.Interfaces.Services;
-using InventorySales.Application.Profiles;
 using InventorySales.Application.UnitOfWork;
 using InventorySales.Infrastructure.Data;
 using InventorySales.Infrastructure.GenericRepository;
@@ -9,7 +9,6 @@ using InventorySales.Infrastructure.Repositories;
 using InventorySales.Infrastructure.Services;
 using InventorySales.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,8 +24,13 @@ builder.Services.AddDbContext<AppDbContext>(option
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' was not found.")));
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<ISupplierRepostiory, SupplierRepository>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
@@ -39,6 +43,10 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
